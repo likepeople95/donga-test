@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>동아일보 채용설명회</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#00827f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="동아일보 랠리">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCLoPPcte1rpKAwwr52CknNqqxxQgywT2k",
+    authDomain: "donga-hr.firebaseapp.com",
+    databaseURL: "https://donga-hr-default-rtdb.firebaseio.com",
+    projectId: "donga-hr",
+    storageBucket: "donga-hr.firebasestorage.app",
+    messagingSenderId: "598489004361",
+    appId: "1:598489004361:web:6754d1f499db63c30dc298"
+  };
+  firebase.initializeApp(firebaseConfig);
+  window._db = firebase.database();
+  window._fbReady = true;
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --teal:#00827f;
+  --teal-dark:#006663;
+  --teal-light:#e0f2f1;
+  --ink:#1a1a1a;
+  --paper:#ffffff;
+  --paper-warm:#fafafa;
+  --border:#e0e0e0;
+  --gold:#b8860b;
+  --yonsei:#003876;--korea:#8b0000;--skku:#4a7c3f
+}
+html,body{height:100%;background:#f5f5f5}
+body{font-family:'Pretendard','Noto Sans KR',sans-serif;color:var(--ink)}
+#app{max-width:480px;margin:0 auto;background:var(--paper);min-height:100vh;box-shadow:0 0 20px rgba(0,0,0,0.08)}
+
+/* ── 헤더 ── */
+.header{background:var(--teal);color:white;padding:0;position:relative;overflow:hidden}
+.header-inner{padding:20px 20px 18px;position:relative;z-index:1}
+.header-logo-row{display:flex;align-items:center;gap:10px;margin-bottom:2px}
+.header-logo-mark{width:32px;height:32px;opacity:0.9}
+.header-logo-text{font-family:'Pretendard','Noto Sans KR',sans-serif;font-size:20px;font-weight:800;letter-spacing:-0.5px}
+.header-sub{font-size:11px;opacity:0.75;letter-spacing:1px;margin-top:4px}
+.header-ver{font-size:10px;opacity:0.5;margin-top:2px;letter-spacing:1px}
+/* 헤더 장식 */
+.header::after{content:'';position:absolute;right:-30px;top:-30px;width:160px;height:160px;border:2px solid rgba(255,255,255,0.1);border-radius:50%}
+.header::before{content:'';position:absolute;right:20px;top:10px;width:80px;height:80px;border:2px solid rgba(255,255,255,0.08);border-radius:50%}
+
+/* ── 로그인 ── */
+.screen{padding:28px 24px}
+.login-welcome{text-align:center;margin-bottom:28px}
+.login-logo{width:72px;height:72px;margin:0 auto 18px}
+.login-title{font-family:'Pretendard','Noto Sans KR',sans-serif;font-size:22px;font-weight:800;margin-bottom:6px;color:var(--ink);letter-spacing:-0.5px}
+.login-sub{font-size:13px;color:#888;line-height:1.7}
+.input-label{font-size:11px;color:#999;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.name-input{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:10px;font-size:16px;font-family:'Noto Sans KR',sans-serif;background:white;color:var(--ink);margin-bottom:24px;outline:none;-webkit-appearance:none;transition:border-color 0.2s}
+.name-input:focus{border-color:var(--teal)}
+.school-label{font-size:11px;color:#999;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+.school-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:28px}
+.school-btn{padding:16px 6px 14px;background:white;border:1.5px solid var(--border);border-radius:12px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;font-size:11px;font-weight:700;color:#666;transition:all 0.2s;display:flex;flex-direction:column;align-items:center;gap:6px;line-height:1.4;-webkit-tap-highlight-color:transparent}
+.school-btn:active{transform:scale(0.96)}
+.school-btn.selected{border-width:2px;color:white}
+.school-btn.yonsei.selected{border-color:var(--yonsei);background:var(--yonsei)}
+.school-btn.korea.selected{border-color:var(--korea);background:var(--korea)}
+.school-btn.skku.selected{border-color:var(--skku);background:var(--skku)}
+.school-mascot{font-size:30px;line-height:1}
+.school-mascot img{width:52px;height:52px;object-fit:contain;display:block}
+
+
+/* 홈 메뉴 화면 */
+.home-screen{padding:20px}
+.home-greeting{margin-bottom:20px}
+.home-greeting-name{font-family:"Pretendard","Noto Sans KR",sans-serif;font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-0.5px;margin-bottom:4px}
+.home-greeting-sub{font-size:13px;color:#888}
+.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.menu-card{background:white;border-radius:16px;padding:22px 18px;cursor:pointer;border:1px solid #f0f0f0;box-shadow:0 2px 12px rgba(0,0,0,0.06);transition:all 0.2s;-webkit-tap-highlight-color:transparent;display:flex;flex-direction:column;gap:10px}
+.menu-card:active{transform:scale(0.96);box-shadow:0 1px 6px rgba(0,0,0,0.08)}
+.menu-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.menu-title{font-size:15px;font-weight:700;color:var(--ink);letter-spacing:-0.3px}
+.menu-desc{font-size:11px;color:#aaa;line-height:1.5}
+
+/* 시간표 화면 */
+#timetable-screen{display:none;position:fixed;inset:0;background:#f8f8f8;z-index:150;overflow-y:auto;max-width:480px;margin:0 auto}
+.tt-topbar{position:sticky;top:0;background:var(--teal);color:white;padding:14px 18px;display:flex;align-items:center;gap:12px;z-index:10}
+.tt-topbar-title{font-size:15px;font-weight:700;flex:1}
+.tt-close{background:none;border:none;color:white;font-size:22px;cursor:pointer;padding:0;line-height:1}
+.tt-body{padding:16px}
+.tt-card{background:white;border-radius:14px;margin-bottom:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.05)}
+.tt-card-header{padding:12px 16px;display:flex;align-items:center;gap:12px}
+.tt-time{font-size:12px;font-weight:700;color:white;background:var(--teal);padding:4px 10px;border-radius:20px;white-space:nowrap}
+.tt-session{font-size:14px;font-weight:700;color:var(--ink)}
+.tt-card-body{padding:0 16px 14px;border-top:1px solid #f5f5f5}
+.tt-row{display:flex;gap:8px;padding:8px 0;border-bottom:1px solid #f9f9f9;align-items:flex-start}
+.tt-row:last-child{border-bottom:none}
+.tt-row-label{font-size:11px;color:#aaa;width:54px;flex-shrink:0;padding-top:2px}
+.tt-row-val{font-size:13px;color:#333;line-height:1.6;flex:1}
+
+/* 채용정보 화면 */
+#recruit-screen{display:none;position:fixed;inset:0;background:white;z-index:150;overflow-y:auto;max-width:480px;margin:0 auto}
+.rc-topbar{position:sticky;top:0;background:var(--teal);color:white;padding:14px 18px;display:flex;align-items:center;gap:12px;z-index:10}
+.rc-body{padding:20px}
+.rc-coming{text-align:center;padding:60px 20px;color:#bbb}
+.rc-coming-icon{font-size:48px;display:block;margin-bottom:12px}
+.rc-coming-text{font-size:14px;line-height:1.8}
+
+/* 랭킹 화면 */
+#ranking-screen{display:none;position:fixed;inset:0;background:#f8f8f8;z-index:150;max-width:480px;margin:0 auto;flex-direction:column}
+#ranking-screen.show{display:flex;flex-direction:column}
+.rank-topbar{background:var(--teal);color:white;padding:14px 18px;display:flex;align-items:center;gap:12px;flex-shrink:0}
+.rank-topbar-title{font-size:15px;font-weight:700;flex:1}
+.rank-close{background:none;border:none;color:white;font-size:22px;cursor:pointer;padding:0;line-height:1}
+.rank-body{flex:1;overflow-y:auto;padding:16px}
+.rank-section{background:white;border-radius:14px;padding:18px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,0.05)}
+.rank-section-title{font-family:"Pretendard","Noto Sans KR",sans-serif;font-size:13px;font-weight:700;color:#aaa;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+
+/* 올림픽 포디움 스타일 */
+.podium-wrap{display:flex;align-items:flex-end;justify-content:center;gap:8px;margin-top:8px;padding:0 8px}
+.podium-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
+.podium-medal{font-size:28px;line-height:1}
+.podium-school-img{width:44px;height:44px;border-radius:50%;object-fit:contain;border:2px solid white;background:white}
+.podium-school-emoji{font-size:28px;line-height:1}
+.podium-name{font-size:11px;font-weight:700;color:white;text-align:center;line-height:1.4}
+.podium-avg{font-size:11px;color:rgba(255,255,255,0.85);font-weight:500}
+.podium-block{width:100%;border-radius:8px 8px 0 0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:10px 6px 8px}
+.podium-rank1{background:#b8860b;min-height:90px}
+.podium-rank2{background:#888;min-height:65px}
+.podium-rank3{background:#8b5e3c;min-height:45px}
+.podium-empty{background:#ddd;min-height:45px}
+.podium-count{font-size:10px;color:rgba(255,255,255,0.7)}
+
+/* 개인 순위 리스트 */
+.rank-list{display:flex;flex-direction:column;gap:8px}
+.rank-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:#f8f8f8}
+.rank-item.me{background:#e0f2f1;border:1.5px solid var(--teal)}
+.rank-num{font-size:15px;font-weight:800;width:28px;text-align:center;flex-shrink:0;color:#aaa}
+.rank-num.top1{color:#ffd700}
+.rank-num.top2{color:#b0bec5}
+.rank-num.top3{color:#cd7f32}
+.rank-nick{flex:1;font-size:13px;font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rank-school{font-size:11px;color:#aaa;margin-top:2px}
+.rank-stamps{font-size:13px;font-weight:700;color:var(--teal);flex-shrink:0}
+.rank-loading{text-align:center;padding:30px;color:#aaa;font-size:13px}
+
+/* 채용족보 화면 */
+#jokbo-screen{display:none;position:fixed;inset:0;background:#f8f8f8;z-index:150;max-width:480px;margin:0 auto;flex-direction:column}
+#jokbo-screen.show{display:flex;flex-direction:column}
+.jokbo-topbar{background:var(--teal);color:white;padding:14px 18px;display:flex;align-items:center;gap:12px;flex-shrink:0}
+.jokbo-topbar-title{font-size:15px;font-weight:700;flex:1}
+.jokbo-close{background:none;border:none;color:white;font-size:22px;cursor:pointer;padding:0;line-height:1}
+.jokbo-body{flex:1;overflow-y:auto;padding:16px}
+
+/* 연도 탭 */
+.year-tabs{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px}
+.year-tab{padding:8px 16px;border-radius:20px;border:1.5px solid var(--border);background:white;font-size:13px;font-weight:700;color:#888;cursor:pointer;white-space:nowrap;font-family:"Pretendard","Noto Sans KR",sans-serif;transition:all 0.2s;flex-shrink:0}
+.year-tab.active{background:var(--teal);border-color:var(--teal);color:white}
+
+/* 채용 타임라인 */
+.jokbo-card{background:white;border-radius:14px;padding:18px;margin-bottom:12px;box-shadow:0 2px 10px rgba(0,0,0,0.05)}
+.jokbo-card-title{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.timeline{display:flex;flex-direction:column;gap:0}
+.timeline-item{display:flex;gap:14px;position:relative}
+.timeline-item:not(:last-child)::before{content:'';position:absolute;left:15px;top:32px;bottom:0;width:2px;background:#e0e0e0}
+.tl-dot{width:32px;height:32px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;z-index:1}
+.tl-content{flex:1;padding-bottom:16px}
+.tl-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.tl-date{font-size:12px;color:#aaa;margin-bottom:4px}
+.tl-desc{font-size:12px;color:#666;line-height:1.6}
+
+/* 입사 결과 */
+.result-box{background:var(--teal-light);border:1px solid #b2dfdb;border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px}
+.result-num{font-family:"Pretendard","Noto Sans KR",sans-serif;font-size:32px;font-weight:800;color:var(--teal)}
+.result-label{font-size:13px;color:#00524f;line-height:1.7}
+
+/* 필기 문제 */
+.exam-card{background:white;border-radius:14px;padding:18px;margin-bottom:12px;box-shadow:0 2px 10px rgba(0,0,0,0.05)}
+.exam-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;margin-bottom:10px}
+.exam-badge.essay{background:#e8f5e9;color:#2e7d32}
+.exam-badge.writing{background:#e3f2fd;color:#1565c0}
+.exam-q{font-size:14px;color:var(--ink);line-height:1.8;font-weight:500}
+.exam-empty{text-align:center;padding:30px 20px;color:#bbb;font-size:13px;line-height:1.8}
+
+/* 메모장 화면 */
+#memo-screen{display:none;position:fixed;inset:0;background:#f8f8f8;z-index:150;max-width:480px;margin:0 auto;flex-direction:column}
+#memo-screen.show{display:flex}
+.memo-topbar{background:var(--teal);color:white;padding:14px 18px;display:flex;align-items:center;gap:12px;flex-shrink:0}
+.memo-topbar-title{font-size:15px;font-weight:700;flex:1}
+.memo-close{background:none;border:none;color:white;font-size:22px;cursor:pointer;padding:0;line-height:1}
+.memo-body{flex:1;padding:16px;display:flex;flex-direction:column;gap:12px}
+.memo-textarea{flex:1;width:100%;padding:16px;border:1.5px solid #e0e0e0;border-radius:12px;font-size:15px;font-family:"Pretendard","Noto Sans KR",sans-serif;line-height:1.8;resize:none;outline:none;background:white;color:var(--ink);-webkit-appearance:none}
+.memo-textarea:focus{border-color:var(--teal)}
+.memo-save-btn{padding:14px;background:var(--teal);color:white;border:none;border-radius:10px;font-family:"Pretendard","Noto Sans KR",sans-serif;font-size:15px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.memo-save-btn:active{opacity:0.85}
+.memo-saved{font-size:12px;color:#aaa;text-align:center;min-height:16px}
+
+/* Q&A 화면 */
+#qna-screen{display:none;position:fixed;inset:0;background:#f8f8f8;z-index:150;max-width:480px;margin:0 auto;flex-direction:column}
+#qna-screen.show{display:flex}
+.qna-topbar{background:var(--teal);color:white;padding:14px 18px;display:flex;align-items:center;gap:12px;flex-shrink:0}
+.qna-topbar-title{font-size:15px;font-weight:700;flex:1}
+.qna-close{background:none;border:none;color:white;font-size:22px;cursor:pointer;padding:0;line-height:1}
+.qna-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.qna-msg{max-width:85%;padding:10px 14px;border-radius:16px;font-size:14px;line-height:1.6;word-break:break-word}
+.qna-msg.mine{align-self:flex-end;background:var(--teal);color:white;border-bottom-right-radius:4px}
+.qna-msg.other{align-self:flex-start;background:white;color:var(--ink);border-bottom-left-radius:4px;box-shadow:0 1px 4px rgba(0,0,0,0.08)}
+.qna-msg.admin{align-self:flex-start;background:#fff3e0;color:#e65100;border-bottom-left-radius:4px;box-shadow:0 1px 4px rgba(0,0,0,0.08)}
+.qna-msg-name{font-size:11px;opacity:0.7;margin-bottom:3px;font-weight:600}
+.qna-msg-time{font-size:10px;opacity:0.5;margin-top:3px;text-align:right}
+.qna-input-bar{background:white;border-top:1px solid #eee;padding:12px 14px;display:flex;gap:8px;flex-shrink:0}
+.qna-input{flex:1;padding:10px 14px;border:1.5px solid #e0e0e0;border-radius:24px;font-size:14px;font-family:"Pretendard","Noto Sans KR",sans-serif;outline:none;background:#fafafa;-webkit-appearance:none}
+.qna-input:focus{border-color:var(--teal);background:white}
+.qna-send{width:44px;height:44px;background:var(--teal);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;-webkit-tap-highlight-color:transparent;transition:opacity 0.2s}
+.qna-send:active{opacity:0.8}
+.qna-empty{text-align:center;color:#ccc;padding:40px 20px;font-size:13px;line-height:1.8}
+
+/* 좌석 안내 화면 */
+#seat-screen{display:none;position:fixed;inset:0;z-index:200;background:white;max-width:480px;margin:0 auto;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;text-align:center;transform:translateY(100%);transition:transform 0.45s cubic-bezier(0.34,1.1,0.64,1)}
+#seat-screen.show{display:flex;transform:translateY(0)}
+#seat-screen.show{display:flex}
+.seat-school-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:30px;color:white;font-size:14px;font-weight:700;margin-bottom:20px}
+.seat-welcome{font-family:'Noto Serif KR',serif;font-size:22px;font-weight:700;color:var(--ink);margin-bottom:6px;line-height:1.4}
+.seat-desc{font-size:13px;color:#888;margin-bottom:32px;line-height:1.7}
+.seat-svg-wrap{width:100%;max-width:320px;margin:0 auto 24px}
+.seat-svg-wrap svg{width:100%;height:auto;display:block;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.1))}
+.seat-zone-hint{padding:14px 20px;border-radius:12px;font-size:14px;font-weight:700;margin-bottom:28px;display:flex;align-items:center;gap:10px;justify-content:center}
+.seat-enter-btn{width:100%;max-width:320px;padding:16px;border:none;border-radius:12px;font-family:'Noto Sans KR',sans-serif;font-size:17px;font-weight:700;cursor:pointer;color:white;-webkit-tap-highlight-color:transparent;transition:all 0.2s}
+.seat-enter-btn:active{opacity:0.85;transform:scale(0.98)}
+
+/* 비활성 버튼 안내 */
+.login-btn-hint{font-size:12px;color:var(--teal);text-align:center;margin-bottom:8px;min-height:18px;font-weight:500}
+.school-sub{font-size:10px;opacity:0.7;font-weight:400}
+.login-btn{width:100%;padding:15px;background:var(--teal);color:white;border:none;border-radius:10px;font-family:'Noto Sans KR',sans-serif;font-size:16px;font-weight:700;cursor:pointer;letter-spacing:0.5px;opacity:0.35;transition:all 0.2s;-webkit-tap-highlight-color:transparent}
+.login-btn.ready{opacity:1}
+.login-btn.ready:active{opacity:0.85;transform:scale(0.98)}
+
+/* ── 토스트 ── */
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#00827f;color:white;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:700;z-index:300;white-space:nowrap;animation:toastIn 0.3s ease,toastOut 0.3s ease 2.2s forwards;box-shadow:0 4px 20px rgba(0,0,0,0.2)}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@keyframes toastOut{from{opacity:1}to{opacity:0}}
+
+/* ── 유저바 ── */
+@keyframes fadeInMain{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.main-fadein{animation:fadeInMain 0.5s ease forwards}
+.user-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-bottom:1px solid var(--border);background:white}
+.user-left{display:flex;align-items:center;gap:8px;min-width:0;overflow:hidden}
+.user-name{font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px}
+.user-school-badge{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;color:white;white-space:nowrap}
+.badge-yonsei{background:var(--yonsei)}.badge-korea{background:var(--korea)}.badge-skku{background:var(--skku)}
+.btn-home{display:flex;align-items:center;gap:4px;padding:6px 12px;background:transparent;border:1px solid var(--border);border-radius:6px;font-size:11px;font-weight:500;color:#888;cursor:pointer;font-family:'Noto Sans KR',sans-serif;white-space:nowrap;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+
+/* ── 카메라 안내 배너 ── */
+.camera-guide{
+  background:var(--teal-light);border-bottom:1px solid #b2dfdb;
+  padding:12px 20px;display:flex;align-items:center;gap:10px
+}
+.camera-guide-icon{font-size:22px;flex-shrink:0}
+.camera-guide-text{font-size:12px;color:#00524f;line-height:1.6}
+.camera-guide-text strong{display:block;font-size:13px;color:var(--teal-dark);margin-bottom:1px}
+
+/* ── 확인 팝업 ── */
+.confirm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:100;align-items:center;justify-content:center;padding:20px}
+.confirm-overlay.show{display:flex}
+.confirm-box{background:white;border-radius:16px;padding:28px 24px;width:100%;max-width:320px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.15)}
+.confirm-title{font-family:'Noto Serif KR',serif;font-size:16px;font-weight:700;margin-bottom:8px}
+.confirm-sub{font-size:13px;color:#888;margin-bottom:24px;line-height:1.7}
+.confirm-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cbtn-cancel{padding:12px;background:#f5f5f5;border:none;border-radius:8px;font-size:14px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;color:#666}
+.cbtn-ok{padding:12px;background:var(--teal);border:none;border-radius:8px;font-size:14px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;color:white;font-weight:700}
+
+/* ── 스탬프 ── */
+.stamp-section{padding:20px}
+.stamp-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.stamp-label{font-family:'Noto Serif KR',serif;font-size:15px;font-weight:700;color:var(--ink)}
+.stamp-count{font-size:12px;color:var(--teal);font-weight:700}
+.pbar{height:3px;background:#e0e0e0;border-radius:2px;margin-bottom:16px;overflow:hidden}
+.pfill{height:100%;background:var(--teal);transition:width 0.5s ease}
+.pfill.gold{background:var(--gold)}
+.stamp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.stamp-cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:12px;border:1.5px dashed #d0d0d0;background:white;transition:all 0.25s;position:relative;overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.stamp-cell:not(.done):active{transform:scale(0.92);background:#f0fafa}
+.stamp-cell:not(.done):hover{border-color:var(--teal);background:#f0fafa}
+.stamp-cell.done{border-style:solid;border-color:var(--teal);background:var(--teal-light);animation:stampIn 0.4s cubic-bezier(0.34,1.56,0.64,1)}
+.stamp-cell svg{width:52%;height:52%}
+.stamp-cell:not(.done) svg{opacity:0.2}
+.stamp-cell.done svg path,.stamp-cell.done svg rect,.stamp-cell.done svg circle,.stamp-cell.done svg line,.stamp-cell.done svg polyline,.stamp-cell.done svg polygon{stroke:var(--teal)}
+
+.stamp-num{position:absolute;bottom:3px;right:5px;font-size:9px;color:#ccc;font-weight:700}
+.stamp-cell.done .stamp-num{color:rgba(0,130,127,0.4)}
+@keyframes stampIn{0%{transform:scale(0.3);opacity:0}100%{transform:scale(1);opacity:1}}
+.divider{border:none;border-top:1px solid #f0f0f0;margin:4px 0 18px}
+.section-label{font-size:10px;color:#aaa;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.stamp-grid-lec{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.stamp-cell-lec{aspect-ratio:2.4/1;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;border:1.5px dashed #d0d0d0;background:white;font-size:13px;font-weight:500;color:#bbb;transition:all 0.25s;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.stamp-cell-lec:not(.done):active{transform:scale(0.95)}
+.stamp-cell-lec.done{border-style:solid;border-color:var(--gold);background:#fef3cd;color:var(--gold);font-weight:700;animation:stampIn 0.4s cubic-bezier(0.34,1.56,0.64,1)}
+
+/* ── 기사 뷰어 ── */
+#article-screen{display:none;position:fixed;inset:0;background:white;z-index:150;overflow-y:auto;max-width:480px;margin:0 auto}
+.article-topbar{position:sticky;top:0;background:var(--teal);color:white;padding:12px 16px;display:flex;align-items:center;gap:12px;z-index:10}
+.article-topbar-title{font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:700;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.article-close{background:none;border:none;color:white;font-size:22px;cursor:pointer;padding:0;flex-shrink:0;line-height:1}
+.article-body{padding:22px 20px}
+.article-category{font-size:11px;font-weight:700;color:var(--teal);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+.article-title{font-family:'Noto Serif KR',serif;font-size:21px;font-weight:700;line-height:1.5;margin-bottom:12px;color:var(--ink)}
+.article-meta{font-size:12px;color:#aaa;margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:8px}
+.article-meta-logo{width:20px;height:20px}
+.article-img-placeholder{width:100%;aspect-ratio:16/9;background:#f5f5f5;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;color:#ccc;font-size:13px;flex-direction:column;gap:6px}
+.article-img{width:100%;border-radius:10px;margin-bottom:18px;object-fit:cover}
+.article-text{font-size:15px;line-height:1.9;color:#333;margin-bottom:22px}
+.article-text p{margin-bottom:16px}
+.article-video{width:100%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;margin-bottom:22px;background:#111}
+.article-video iframe{width:100%;height:100%;border:none}
+
+/* 스탬프 CTA */
+.stamp-cta{position:sticky;bottom:0;padding:14px 20px 20px;background:white;border-top:1px solid #f0f0f0}
+.stamp-cta-done{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;background:#e0f2f1;border-radius:10px;font-size:14px;font-weight:700;color:var(--teal-dark)}
+.stamp-cta-btn{width:100%;padding:15px;background:var(--teal);color:white;border:none;border-radius:10px;font-family:'Noto Sans KR',sans-serif;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;-webkit-tap-highlight-color:transparent;transition:all 0.2s}
+.stamp-cta-btn:active{opacity:0.85;transform:scale(0.98)}
+
+/* ── 완료 화면 ── */
+.complete-wrap{min-height:100vh;background:var(--teal-dark);display:flex;align-items:center;justify-content:center;padding:40px 24px}
+.complete-card{text-align:center;width:100%}
+.seal{width:120px;height:120px;border:3px solid rgba(255,255,255,0.5);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;animation:pulse 1.5s ease-in-out infinite alternate;background:rgba(255,255,255,0.1)}
+@keyframes pulse{from{box-shadow:0 0 0 0 rgba(255,255,255,0.2)}to{box-shadow:0 0 0 18px rgba(255,255,255,0)}}
+.seal-logo{width:60px;height:60px;opacity:0.9}
+.c-title{font-family:'Noto Serif KR',serif;font-size:26px;font-weight:700;color:white;margin-bottom:6px}
+.c-div{width:50px;height:2px;background:rgba(255,255,255,0.4);margin:14px auto}
+.c-sub{font-size:14px;color:rgba(255,255,255,0.7);margin-bottom:24px;line-height:1.9}
+.c-dots{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:24px}
+.cdot{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;color:white;font-size:11px}
+.cdot.g{background:var(--gold)}
+.c-info{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:18px 24px;font-size:14px;color:rgba(255,255,255,0.8);margin:0 auto 24px;line-height:2.2;max-width:320px}
+.c-info strong{color:white}
+.school-tag{display:inline-block;padding:3px 12px;border-radius:20px;font-size:11px;font-weight:700;color:white;vertical-align:middle;margin-left:4px}
+.btn-reset{padding:11px 32px;background:transparent;border:1px solid rgba(255,255,255,0.3);border-radius:6px;color:rgba(255,255,255,0.5);font-size:13px;cursor:pointer;font-family:'Noto Sans KR',sans-serif}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="header">
+    <div class="header-inner">
+      <div class="header-logo-row">
+        <img class="header-logo-mark" src="donga_mark.png" alt="동아일보" style="filter:brightness(0) invert(1);width:32px;height:32px;object-fit:contain">
+        <span class="header-logo-text">동아일보</span>
+      </div>
+      <div class="header-sub">언론고시반과 함께하는 동아일보 채용설명회</div>
+      <div class="header-ver">v51</div>
+    </div>
+  </div>
+  <div id="main"></div>
+</div>
+
+<!-- 시간표 화면 -->
+<div id="timetable-screen">
+  <div class="tt-topbar">
+    <button class="tt-close" onclick="closeTimetable()">✕</button>
+    <div class="tt-topbar-title">📅 시간표</div>
+  </div>
+  <div class="tt-body" id="tt-body"></div>
+</div>
+
+<!-- 채용정보 화면 -->
+<div id="recruit-screen">
+  <div class="rc-topbar" style="position:sticky;top:0;background:var(--teal);color:white;padding:14px 18px;display:flex;align-items:center;gap:12px;z-index:10">
+    <button style="background:none;border:none;color:white;font-size:22px;cursor:pointer;padding:0;line-height:1" onclick="closeRecruit()">✕</button>
+    <div style="font-size:15px;font-weight:700;flex:1">📋 채용 정보</div>
+  </div>
+  <div class="rc-body">
+    <div class="rc-coming">
+      <span class="rc-coming-icon">🔜</span>
+      <div class="rc-coming-text">채용 정보가 곧 업데이트됩니다.<br>조금만 기다려주세요!</div>
+    </div>
+  </div>
+</div>
+
+<!-- 랭킹 화면 -->
+<div id="ranking-screen">
+  <div class="rank-topbar">
+    <button class="rank-close" onclick="closeRanking()">✕</button>
+    <div class="rank-topbar-title">🏆 실시간 랭킹</div>
+  </div>
+  <div class="rank-body">
+    <div class="rank-section">
+      <div class="rank-section-title">🏫 학교별 순위 (평균 스탬프)</div>
+      <div id="school-chart"><div class="rank-loading">불러오는 중...</div></div>
+    </div>
+    <div class="rank-section">
+      <div class="rank-section-title">👤 개인 순위</div>
+      <div class="rank-list" id="personal-list"><div class="rank-loading">불러오는 중...</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 채용족보 화면 -->
+<div id="jokbo-screen">
+  <div class="jokbo-topbar">
+    <button class="jokbo-close" onclick="closeJokbo()">✕</button>
+    <div class="jokbo-topbar-title">📚 채용족보</div>
+  </div>
+  <div class="jokbo-body">
+    <!-- 연도 탭 -->
+    <div class="year-tabs" id="year-tabs"></div>
+    <!-- 채용 일정 -->
+    <div id="jokbo-content"></div>
+  </div>
+</div>
+
+<!-- 메모장 화면 -->
+<div id="memo-screen">
+  <div class="memo-topbar">
+    <button class="memo-close" onclick="closeMemo()">✕</button>
+    <div class="memo-topbar-title">📝 나만의 메모장</div>
+  </div>
+  <div class="memo-body">
+    <textarea class="memo-textarea" id="memo-textarea" placeholder="강의 내용, 질문, 느낀 점 등 자유롭게 메모하세요.&#10;메모는 내 폰에만 저장돼요 🔒" oninput="autoSaveMemo()"></textarea>
+    <div class="memo-saved" id="memo-saved"></div>
+  </div>
+</div>
+
+<!-- Q&A 화면 -->
+<div id="qna-screen">
+  <div class="qna-topbar">
+    <button class="qna-close" onclick="closeQnA()">✕</button>
+    <div class="qna-topbar-title">💬 실시간 Q&A</div>
+    <span id="qna-online" style="font-size:11px;opacity:0.75"></span>
+  </div>
+  <div style="background:#e0f2f1;padding:11px 18px;font-size:13px;color:#00524f;text-align:center;line-height:1.6;border-bottom:1px solid #b2dfdb">
+    💬 질문을 남겨주시면 선배들이 Q&A 시간에 답변해드립니다
+  </div>
+  <div class="qna-messages" id="qna-messages">
+    <div class="qna-empty">질문을 입력하면 인사팀과 강사진이<br>실시간으로 답변해드려요 😊</div>
+  </div>
+  <div class="qna-input-bar">
+    <input class="qna-input" id="qna-input" type="text" placeholder="질문을 입력하세요..." maxlength="300" autocomplete="off">
+    <button class="qna-send" onclick="sendQnA()">
+      <i class="ti ti-send" style="color:white;font-size:18px"></i>
+    </button>
+  </div>
+</div>
+
+<!-- 좌석 안내 화면 -->
+<div id="seat-screen">
+  <div class="seat-school-badge" id="seat-badge"></div>
+  <div class="seat-welcome" id="seat-welcome"></div>
+  <div class="seat-desc" id="seat-desc"></div>
+  <div class="seat-svg-wrap" id="seat-svg"></div>
+  <div class="seat-zone-hint" id="seat-zone-hint"></div>
+  <button class="seat-enter-btn" id="seat-enter-btn" onclick="enterMain()"></button>
+</div>
+
+<!-- 기사 뷰어 -->
+<div id="article-screen">
+  <div class="article-topbar">
+    <button class="article-close" onclick="closeArticle()">✕</button>
+    <div class="article-topbar-title" id="article-topbar-title">동아일보</div>
+  </div>
+  <div class="article-body" id="article-body"></div>
+  <div class="stamp-cta" id="stamp-cta"></div>
+</div>
+
+<!-- 기사 재방문 확인 팝업 -->
+<div class="confirm-overlay" id="article-confirm-overlay">
+  <div class="confirm-box">
+    <div class="confirm-title" id="article-confirm-title">기사를 다시 보시겠어요?</div>
+    <div class="confirm-sub">동아일보 기사 페이지로 이동합니다</div>
+    <div class="confirm-btns">
+      <button class="cbtn-cancel" onclick="document.getElementById('article-confirm-overlay').classList.remove('show')">닫기</button>
+      <button class="cbtn-ok" onclick="const l=document.getElementById('article-confirm-overlay').dataset.link;document.getElementById('article-confirm-overlay').classList.remove('show');window.open(l,'_blank')">바로 이동</button>
+    </div>
+  </div>
+</div>
+
+<!-- 처음으로 확인 팝업 -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <div class="confirm-title">처음으로 돌아갈까요?</div>
+    <div class="confirm-sub">스탬프 기록과 저장 정보가<br>모두 초기화됩니다.</div>
+    <div class="confirm-btns">
+      <button class="cbtn-cancel" onclick="hideConfirm()">계속하기</button>
+      <button class="cbtn-ok" onclick="resetAll()">처음으로</button>
+    </div>
+  </div>
+</div>
+
+<script>
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));}
+
+const LS_KEY='donga_rally_2025';
+
+const STAMPS=[
+  {id:'camera',   label:'지폐',      code:'DONGA_EXHIBIT_1', link:'https://www.donga.com/news/Society/article/all/20240623/125574152/1'},
+  {id:'mic',      label:'마이크',    code:'DONGA_EXHIBIT_2', link:''},
+  {id:'newspaper',label:'신문',      code:'DONGA_EXHIBIT_3', link:''},
+  {id:'pen',      label:'펜',        code:'DONGA_EXHIBIT_4', link:''},
+  {id:'notebook', label:'노트',      code:'DONGA_EXHIBIT_5', link:''},
+  {id:'badge',    label:'기자증',    code:'DONGA_EXHIBIT_6', link:''},
+  {id:'camera2',  label:'영상카메라',code:'DONGA_EXHIBIT_7', link:''},
+  {id:'radio',    label:'라디오',    code:'DONGA_EXHIBIT_8', link:''},
+];
+const LECTURES=[
+  {id:'lec1', label:'MY DONGA', code:'DONGA_LECTURE_1', link:''},
+  {id:'lec2', label:'MY LIFE',  code:'DONGA_LECTURE_2', link:''},
+  {id:'lec3', label:'MY HERO',  code:'DONGA_LECTURE_3', link:''},
+  {id:'lec4', label:'MY STORY', code:'DONGA_LECTURE_4', link:''},
+];
+const ICONS={
+  camera:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="22" height="14" rx="2"/><circle cx="12" cy="13" r="3"/><line x1="5" y1="10" x2="5" y2="10"/><line x1="19" y1="10" x2="19" y2="10"/></svg>`,
+  mic:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>`,
+  newspaper:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h14a2 2 0 0 0 2-2V7.5L14.5 2H6a2 2 0 0 0-2 2v4"/><polyline points="14 2 14 8 20 8"/><path d="M2 15h10"/><path d="M2 11h3"/><path d="M2 19h10"/></svg>`,
+  pen:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`,
+  notebook:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
+  badge:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M7 22v-2a5 5 0 0 1 10 0v2"/><line x1="9" y1="4" x2="15" y2="4"/></svg>`,
+  camera2:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>`,
+  radio:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M19.5 5.5a10 10 0 0 1 0 13"/><path d="M7.5 8.5a5 5 0 0 0 0 7"/><path d="M4.5 5.5a10 10 0 0 0 0 13"/><circle cx="12" cy="12" r="2"/></svg>`,
+  lec:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
+};
+
+const DONGA_LOGO_SVG='<img src="donga_mark.png" alt="동아일보" style="width:100%;height:100%;object-fit:contain">';
+
+const NICKNAMES = [
+  '열정가득 현장기자','밤새는 특파원','부장님의 애제자',
+  '카페인충전 마감기자','눈빛날카로운 취재왕',
+  '신입인척 베테랑','특종을노리는 탐정기자',
+  '밥은먹었나 현장르포','마감5분전 뉴스헌터',
+  '잠못자는 조간기자','커피세잔째 편집장',
+  '독점취재 전문기자','노트북들고뛰는 특파원',
+  '팩트만말하는 진실탐정','카메라메고달리는 기자',
+  '오늘도야근 마감전사','세상을바꾸는 펜끝',
+  '질문폭격 인터뷰어','현장냄새나는 르포기자',
+  '특종하나만 기다리는 헌터','사진찍는 현장기자',
+  '독자를위한 진실추적자','새벽네시 조간담당',
+  '호외호외 속보기자','날카로운질문 팩트체커',
+  '마이크잡은 현장기자','취재수첩꽉찬 베테랑',
+  '기사쓰는 야행성동물','편집국의 新예비기자',
+  '첫발내딛는 언론인','꿈꾸는 특종헌터',
+  '뉴스를만드는 사람','현장누비는 탐험기자',
+  '글쓰는 밤의전사','진실을캐는 두더지기자',
+  '독점입수 단독기자','오늘의헤드라인 작성자',
+  '커피한잔의 마감여유','취재현장 돌격대장',
+  '부장몰래쓰는 특종','뉴스룸의 막내기자',
+  '데스크에서날아온 특파원','취재가좋은 길치기자',
+  '렌즈너머 세상기자','질문하나로 승부하는 기자',
+  '노트한권다쓴 현장맨','인터뷰의달인 소통왕',
+  '기사한줄에올인 뉴스쟁이','헤드라인장인 편집러',
+  '취재현장 신출내기','마감벨울리는 뉴스요정'
+];
+
+function getOrCreateNickname(){
+  const key = 'donga_nickname_' + user.name + user.school;
+  let nick = '';
+  try { nick = localStorage.getItem(key) || ''; } catch(e){}
+  if(!nick){
+    // 이름+학교 기반으로 일관된 닉네임 배정
+    let hash = 0;
+    const seed = user.name + user.school;
+    for(let i=0;i<seed.length;i++) hash = (hash*31 + seed.charCodeAt(i)) % NICKNAMES.length;
+    nick = NICKNAMES[Math.abs(hash)];
+    try { localStorage.setItem(key, nick); } catch(e){}
+  }
+  return nick;
+}
+
+const SCHOOL_DATA={
+  yonsei:{label:'연세대',sub:'춘추화백실',emoji:'🦅',img:'yonsei.jpg',badgeClass:'badge-yonsei',color:'#003876'},
+  korea: {label:'고려대',sub:'KUMA',      emoji:'🐯',img:'korea.gif', badgeClass:'badge-korea', color:'#8b0000'},
+  skku:  {label:'성균관대',sub:'예필재',   emoji:'🦁',img:'skku.jpg',  badgeClass:'badge-skku',  color:'#4a7c3f'},
+};
+
+let user={name:'',school:''};
+let state={exhibit:new Array(8).fill(false),lecture:new Array(4).fill(false)};
+let currentArticle=null;
+
+function save(){try{localStorage.setItem(LS_KEY,JSON.stringify({user,exhibit:state.exhibit,lecture:state.lecture}));}catch(e){}}
+function load(){try{const r=localStorage.getItem(LS_KEY);return r?JSON.parse(r):null;}catch(e){return null;}}
+function clearSave(){try{localStorage.removeItem(LS_KEY);}catch(e){}}
+function showToast(msg,color){
+  const t=document.createElement('div');t.className='toast';
+  if(color)t.style.background=color;
+  t.textContent=msg;document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2600);
+}
+
+function init(){
+  const saved=load();
+  if(saved&&saved.user&&saved.user.name&&saved.user.school){
+    user=saved.user;
+    state.exhibit=saved.exhibit||new Array(8).fill(false);
+    state.lecture=saved.lecture||new Array(2).fill(false);
+    const total=state.exhibit.filter(Boolean).length+state.lecture.filter(Boolean).length;
+    renderHome();
+    setTimeout(()=>showToast(`👋 다시 오셨군요, ${user.name}님! (스탬프 ${total}/${STAMPS.length+LECTURES.length})`),300);
+  } else {
+    renderLogin();
+  }
+  checkURLQR();
+}
+
+function renderLogin(){
+  user={name:'',school:''};
+  document.getElementById('main').innerHTML=`
+    <div class="screen">
+      <div class="login-welcome">
+        <div class="login-logo"><img src="donga_mark.png" alt="동아일보" style="width:100%;height:100%;object-fit:contain"></div>
+        <div class="login-title">채용설명회에 오신 것을<br>환영합니다</div>
+        <div class="login-sub">이름과 소속을 입력하세요</div>
+      </div>
+      <div class="input-label">이름</div>
+      <input class="name-input" id="inp-name" type="text" placeholder="이름을 입력하세요" oninput="checkReady()" autocomplete="off">
+      <div class="school-label">소속 학교</div>
+      <div class="school-grid">
+        ${Object.entries(SCHOOL_DATA).map(([k,v])=>`
+          <button class="school-btn ${k}" id="sb-${k}" onclick="selectSchool('${k}')">
+            <span class="school-mascot"><img src="${v.img}" alt="${v.label}"></span>
+            <span>${v.label}</span>
+            <span class="school-sub">${v.sub}</span>
+          </button>`).join('')}
+      </div>
+      <div class="login-btn-hint" id="login-btn-hint"></div>
+      <button class="login-btn" id="login-btn" onclick="onLoginBtnClick()">채용설명회 입장하기 →</button>
+    </div>`;
+}
+
+function selectSchool(k){
+  user.school=k;
+  document.querySelectorAll('.school-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('sb-'+k).classList.add('selected');
+  checkReady();
+}
+
+
+function checkReady(){
+  const name=(document.getElementById('inp-name').value||'').trim();
+  const btn=document.getElementById('login-btn');
+  const hint=document.getElementById('login-btn-hint');
+  (name&&user.school)?btn.classList.add('ready'):btn.classList.remove('ready');
+  if(hint) hint.textContent='';
+}
+
+function onLoginBtnClick(){
+  const name=(document.getElementById('inp-name').value||'').trim();
+  const hint=document.getElementById('login-btn-hint');
+  if(!name&&!user.school){
+    if(hint) hint.textContent='이름과 학교를 입력해 주시기 바랍니다';
+  } else if(!name){
+    if(hint) hint.textContent='이름을 입력해 주시기 바랍니다';
+  } else if(!user.school){
+    if(hint) hint.textContent='소속 학교를 선택해 주시기 바랍니다';
+  } else {
+    doLogin();
+  }
+}
+function doLogin(){
+  const name=(document.getElementById('inp-name').value||'').trim();
+  if(!name||!user.school)return;
+  user.name=name;
+  state={exhibit:new Array(8).fill(false),lecture:new Array(4).fill(false)};
+  save();
+  showSeatScreen();
+}
+
+
+function showSeatScreen(){
+  const sd=SCHOOL_DATA[user.school];
+  const seatInfo={
+    yonsei:{zone:'왼쪽 구역',hint:'왼쪽 구역에 착석해 주세요 👈',hintBg:'#e8edf5',hintColor:'#003876'},
+    korea: {zone:'가운데 구역',hint:'가운데 구역에 착석해 주세요 👇',hintBg:'#f5e8e8',hintColor:'#8b0000'},
+    skku:  {zone:'오른쪽 구역',hint:'오른쪽 구역에 착석해 주세요 👉',hintBg:'#e8eef5',hintColor:'#1a5276'},
+  }[user.school];
+
+  const yC = user.school==='yonsei' ? '#003876' : '#dde3ed';
+  const kC = user.school==='korea'  ? '#8b0000' : '#eddddd';
+  const sC = user.school==='skku'   ? '#1a5276' : '#dde4ed';
+  const yT = user.school==='yonsei' ? 'white' : '#aaa';
+  const kT = user.school==='korea'  ? 'white' : '#aaa';
+  const sT = user.school==='skku'   ? 'white' : '#aaa';
+
+  document.getElementById('seat-badge').style.background = sd.color;
+  document.getElementById('seat-badge').textContent = sd.emoji + ' ' + sd.label + ' · ' + sd.sub;
+  document.getElementById('seat-welcome').innerHTML = '<span style="white-space:nowrap">' + user.name + '님의 자리를 안내해드려요</span>';
+  document.getElementById('seat-desc').textContent = '아래 좌석 배치도를 확인해주세요';
+
+  // 도넛형 3분할 좌석 배치도
+  // 바깥 반원 R=130, 안쪽 원 R=50, 중심 (160,150)
+  // 연세대(왼), 고려대(가운데), 성균관대(오른)
+  // 각 구역 경계선: 왼/가운데 경계 35도, 가운데/오른 경계 145도 (위에서)
+  const cx=160, cy=145, R=128, r=52;
+  // 경계 각도 (라디안, 0=오른쪽, 반시계)
+  // 반원이므로 180도~360도(=0도) 사용
+  // 연세대: 180~(180+60)=240도, 고려대: 240~300도, 성균관대: 300~360도
+  function pt(cx,cy,radius,deg){
+    const rad = deg * Math.PI / 180;
+    return [cx + radius*Math.cos(rad), cy + radius*Math.sin(rad)];
+  }
+  // 경계각도
+  const a1=180, a2=240, a3=300, a4=360;
+  function sector(a_start, a_end, fillColor, steps){
+    steps = steps||20;
+    let d = '';
+    const [ox1,oy1]=pt(cx,cy,r,a_start);
+    const [ox2,oy2]=pt(cx,cy,R,a_start);
+    d += 'M '+ox1+' '+oy1+' L '+ox2+' '+oy2+' ';
+    // 바깥 호
+    for(let i=1;i<=steps;i++){
+      const a=a_start+(a_end-a_start)*i/steps;
+      const [px,py]=pt(cx,cy,R,a);
+      d+='L '+px+' '+py+' ';
+    }
+    const [ix2,iy2]=pt(cx,cy,r,a_end);
+    d+='L '+ix2+' '+iy2+' ';
+    // 안쪽 호 (역방향)
+    for(let i=1;i<=steps;i++){
+      const a=a_end+(a_start-a_end)*i/steps;
+      const [px,py]=pt(cx,cy,r,a);
+      d+='L '+px+' '+py+' ';
+    }
+    d+='Z';
+    return '<path d="'+d+'" fill="'+fillColor+'" stroke="white" stroke-width="3"/>';
+  }
+  function textAt(cx,cy,R,r,a_start,a_end,lines,color){
+    const aMid=(a_start+a_end)/2;
+    const rMid=(R+r)/2;
+    const [tx,ty]=pt(cx,cy,rMid,aMid);
+    let res='';
+    const lineH=15;
+    const startY=ty-(lines.length-1)*lineH/2;
+    lines.forEach((line,i)=>{
+      const fw=i===0?'700':'400';
+      const fs=i===0?12:10;
+      res+='<text x="'+tx+'" y="'+(startY+i*lineH)+'" text-anchor="middle" font-size="'+fs+'" font-weight="'+fw+'" fill="'+color+'" font-family="sans-serif">'+line+'</text>';
+    });
+    return res;
+  }
+
+  const gray='#cccccc';
+  const yFill = user.school==='yonsei' ? '#003876' : gray;
+  const kFill = user.school==='korea'  ? '#8b0000' : gray;
+  const sFill = user.school==='skku'   ? '#4a7c3f' : gray;
+  const yTxt  = user.school==='yonsei' ? 'white' : '#888';
+  const kTxt  = user.school==='korea'  ? 'white' : '#888';
+  const sTxt  = user.school==='skku'   ? 'white' : '#888';
+
+  const svg = '<svg viewBox="0 0 320 230" xmlns="http://www.w3.org/2000/svg">'
+    + sector(a1,a2,yFill)
+    + sector(a2,a3,kFill)
+    + sector(a3,a4,sFill)
+    + textAt(cx,cy,R,r,a1,a2,['연세대','춘추화백실'],yTxt)
+    + textAt(cx,cy,R,r,a2,a3,['고려대','KUMA'],kTxt)
+    + textAt(cx,cy,R,r,a3,a4,['성균관대','예필재'],sTxt)
+    + '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="white" stroke="#b0b8c1" stroke-width="2"/>'
+    + '<text x="'+cx+'" y="'+(cy+4)+'" text-anchor="middle" font-size="10" fill="#aaa" font-family="sans-serif">강단</text>'
+    + '<rect x="95" y="'+(cy+r+14)+'" width="130" height="28" rx="8" fill="#b0b8c1"/>'
+    + '<text x="160" y="'+(cy+r+32)+'" text-anchor="middle" font-size="12" font-weight="700" fill="white" font-family="sans-serif">LED 화면</text>'
+    + '</svg>';
+
+  document.getElementById('seat-svg').innerHTML = svg;
+  document.getElementById('seat-zone-hint').style.display = 'none';
+
+  const btnEl = document.getElementById('seat-enter-btn');
+  btnEl.style.background = sd.color;
+  btnEl.textContent = '확인';
+
+  const seatEl = document.getElementById('seat-screen');
+  seatEl.style.display = 'flex';
+  // 다음 프레임에 show 클래스 추가해야 transition 작동
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      seatEl.classList.add('show');
+    });
+  });
+}
+
+function enterMain(){
+  const seatEl = document.getElementById('seat-screen');
+  seatEl.style.transform = 'translateY(100%)';
+  seatEl.style.transition = 'transform 0.35s ease-in';
+  setTimeout(() => {
+    seatEl.classList.remove('show');
+    seatEl.style.transform = '';
+    seatEl.style.transition = '';
+    seatEl.style.display = 'none';
+    renderHome(true);
+    const pq=sessionStorage.getItem('pending_qr');
+    if(pq){sessionStorage.removeItem('pending_qr');setTimeout(()=>openArticleByCode(pq),400);}
+  }, 350);
+}
+
+/* ── 홈 화면 ── */
+function renderHome(fadein){
+  const sd=SCHOOL_DATA[user.school];
+  const eC=state.exhibit.filter(Boolean).length;
+  const lC=state.lecture.filter(Boolean).length;
+  const total=eC+lC;
+  document.getElementById('main').innerHTML=`
+    <div class="user-bar${fadein?' main-fadein':''}">
+      <div class="user-left">
+        <span class="user-name">${user.name}</span>
+        <span class="user-school-badge ${sd.badgeClass}">${sd.emoji} ${sd.label} · ${sd.sub}</span>
+      </div>
+      <button class="btn-home" onclick="showConfirm()"><i class="ti ti-home"></i> 처음으로</button>
+    </div>
+    <div class="home-screen">
+      <div class="home-greeting">
+        <div class="home-greeting-name">${user.name}님, 환영해요 👋</div>
+        <div class="home-greeting-sub">언론고시반과 함께하는 동아일보 채용설명회</div>
+      </div>
+      <div class="menu-grid">
+        <div class="menu-card" onclick="openTimetable()">
+          <div class="menu-icon" style="background:#e8f5e9">📅</div>
+          <div>
+            <div class="menu-title">시간표</div>
+            <div class="menu-desc">오늘의 일정을 확인하세요</div>
+          </div>
+        </div>
+        <div class="menu-card" onclick="renderMain(true)">
+          <div class="menu-icon" style="background:#e0f2f1">🎯</div>
+          <div>
+            <div class="menu-title">스탬프 모으기</div>
+            <div class="menu-desc">스탬프 ${total}/${STAMPS.length+LECTURES.length} 달성</div>
+          </div>
+        </div>
+        <div class="menu-card" onclick="openQnA()">
+          <div class="menu-icon" style="background:#fff3e0">💬</div>
+          <div>
+            <div class="menu-title">실시간 Q&A</div>
+            <div class="menu-desc">궁금한 점을 질문하세요<br>익명이니까 안심하세요</div>
+          </div>
+        </div>
+        <div class="menu-card" onclick="openJokbo()">
+          <div class="menu-icon" style="background:#e8eaf6">📚</div>
+          <div>
+            <div class="menu-title">채용족보</div>
+            <div class="menu-desc">역대 채용 일정 &amp; 필기문제</div>
+          </div>
+        </div>
+        <div class="menu-card" onclick="openMemo()">
+          <div class="menu-icon" style="background:#f3e5f5">📝</div>
+          <div>
+            <div class="menu-title">메모장</div>
+            <div class="menu-desc">나만의 강의 메모<br>내 폰에만 저장돼요</div>
+          </div>
+        </div>
+        <div class="menu-card" onclick="openInstagram()">
+          <div class="menu-icon" style="background:#fce4ec">📸</div>
+          <div>
+            <div class="menu-title">채용 인스타그램</div>
+            <div class="menu-desc">@donga_recruit<br>팔로우하고 소식받기</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* ── 시간표 ── */
+const TIMETABLE = [
+  {time:'13:00 ~ 13:10', session:'오프닝', speaker:'인사팀장', items:['회사소개 및 참석자 소개']},
+  {time:'13:10 ~ 13:30', session:'전형소개', speaker:'인사팀 매니저', items:['채용절차. 인턴과정','Back to the 20s소개']},
+  {time:'13:30 ~ 14:30', session:'직무소개', speaker:'편집국 기자', items:['동아일보 기자의 하루 일과','부서별 업무 소개']},
+  {time:'14:30 ~ 15:30', session:'히어로콘텐츠 소개', speaker:'히어로콘텐츠 리더', items:['히어로콘텐츠 기획, 취재기']},
+  {time:'15:30 ~ 16:30', session:'선배와의 이야기', speaker:'저연차 기자', items:['언론고시 준비과정','동아일보 인턴과정 소개']},
+  {time:'16:30 ~ ', session:'Q & A', speaker:'-', items:[]},
+];
+
+function openTimetable(){
+  const body = document.getElementById('tt-body');
+  body.innerHTML = TIMETABLE.map(t=>`
+    <div class="tt-card">
+      <div class="tt-card-header">
+        <span class="tt-time">${t.time}</span>
+        <span class="tt-session">${t.session}</span>
+      </div>
+      <div class="tt-card-body">
+        <div class="tt-row">
+          <span class="tt-row-label">발표자</span>
+          <span class="tt-row-val">${t.speaker}</span>
+        </div>
+        ${t.items.length>0?`<div class="tt-row">
+          <span class="tt-row-label">내용</span>
+          <span class="tt-row-val">${t.items.join('<br>')}</span>
+        </div>`:''}
+      </div>
+    </div>`).join('');
+  document.getElementById('timetable-screen').style.display='block';
+}
+function closeTimetable(){ document.getElementById('timetable-screen').style.display='none'; }
+
+function openRecruit(){ document.getElementById('recruit-screen').style.display='block'; }
+
+function openRanking(){
+  document.getElementById('ranking-screen').classList.add('show');
+  loadRanking();
+}
+function closeRanking(){
+  document.getElementById('ranking-screen').classList.remove('show');
+}
+
+function loadRanking(){
+  if(!window._db) return;
+  window._db.ref('rankings').on('value', snapshot=>{
+    const data = snapshot.val() || {};
+    const entries = Object.values(data);
+
+    // 개인 순위
+    entries.sort((a,b)=>b.stamps-a.stamps);
+    const myNick = getOrCreateNickname();
+    const personalList = document.getElementById('personal-list');
+    if(!personalList) return;
+    if(entries.length===0){
+      personalList.innerHTML='<div class="rank-loading">아직 참가자가 없어요</div>';
+    } else {
+      personalList.innerHTML = entries.slice(0,20).map((e,i)=>{
+        const isMe = e.nickname === myNick;
+        const medals = ['🥇','🥈','🥉'];
+        const numClass = i<3 ? `top${i+1}` : '';
+        return `<div class="rank-item${isMe?' me':''}">
+          <div class="rank-num ${numClass}">${medals[i]||i+1}</div>
+          <div style="flex:1;overflow:hidden">
+            <div class="rank-nick">${e.nickname}${isMe?' (나)':''}</div>
+            <div class="rank-school">${e.schoolLabel}</div>
+          </div>
+          <div class="rank-stamps">★${e.stamps}</div>
+        </div>`;
+      }).join('');
+    }
+
+    // 학교별 평균
+    const schoolMap = {yonsei:{label:'연세대',sub:'춘추화백실',color:'#003876',emoji:'🦅',total:0,count:0},korea:{label:'고려대',sub:'KUMA',color:'#8b0000',emoji:'🐯',total:0,count:0},skku:{label:'성균관대',sub:'예필재',color:'#4a7c3f',emoji:'🦁',total:0,count:0}};
+    entries.forEach(e=>{
+      if(schoolMap[e.school]){
+        schoolMap[e.school].total += e.stamps;
+        schoolMap[e.school].count++;
+      }
+    });
+    const schools = Object.entries(schoolMap).map(([k,v])=>({
+      key:k, label:v.label, sub:v.sub, color:v.color, emoji:v.emoji,
+      avg: v.count>0 ? (v.total/v.count).toFixed(1) : 0, count:v.count
+    })).sort((a,b)=>b.avg-a.avg);
+
+    const chart = document.getElementById('school-chart');
+    if(!chart) return;
+    // 포디움 순서: 2등(왼), 1등(가운데), 3등(오른)
+    const podiumOrder = schools.length>=3 ? [schools[1],schools[0],schools[2]] : schools;
+    const blockClass = ['podium-rank2','podium-rank1','podium-rank3'];
+    const medals3 = schools.length>=3 ? ['🥈','🥇','🥉'] : ['🥇','🥈','🥉'];
+    chart.innerHTML = '<div class="podium-wrap">' + podiumOrder.map((s,i)=>{
+      const imgMap = {yonsei:'yonsei.jpg', korea:'korea.gif', skku:'skku.jpg'};
+      return `<div class="podium-item">
+        <div class="podium-medal">${medals3[i]}</div>
+        <img class="podium-school-img" src="${imgMap[s.key]||''}" alt="${s.label}">
+        <div class="podium-block ${blockClass[i]}">
+          <div class="podium-name">${s.label}</div>
+          <div class="podium-avg">★ ${s.count>0?s.avg:'-'}</div>
+          <div class="podium-count">${s.count>0?s.count+'명':'-'}</div>
+        </div>
+      </div>`;
+    }).join('') + '</div>';
+  });
+}
+function closeRecruit(){ document.getElementById('recruit-screen').style.display='none'; }
+
+/* ── 채용족보 데이터 ── */
+const JOKBO = {
+  2024: {
+    timeline: [
+      {emoji:'📋', title:'서류 접수', date:'추후 입력', desc:'지원서 및 포트폴리오 접수'},
+      {emoji:'✏️', title:'필기시험', date:'추후 입력', desc:'논술 1문제 · 작문 1문제'},
+      {emoji:'🗣️', title:'면접', date:'추후 입력', desc:'임원 면접 · 실무 면접'},
+      {emoji:'🏢', title:'인턴십', date:'추후 입력', desc:'현장 인턴 과정'},
+      {emoji:'🎉', title:'최종 입사', date:'추후 입력', desc:''},
+    ],
+    hired: '?',
+    exam: {
+      essay: '추후 입력 예정',
+      writing: '추후 입력 예정',
+    }
+  },
+  2023: {
+    timeline: [
+      {emoji:'📋', title:'서류 접수', date:'추후 입력', desc:''},
+      {emoji:'✏️', title:'필기시험', date:'추후 입력', desc:'논술 1문제 · 작문 1문제'},
+      {emoji:'🗣️', title:'면접', date:'추후 입력', desc:''},
+      {emoji:'🏢', title:'인턴십', date:'추후 입력', desc:''},
+      {emoji:'🎉', title:'최종 입사', date:'추후 입력', desc:''},
+    ],
+    hired: '?',
+    exam: {
+      essay: '추후 입력 예정',
+      writing: '추후 입력 예정',
+    }
+  },
+  2022: {
+    timeline: [
+      {emoji:'📋', title:'서류 접수', date:'추후 입력', desc:''},
+      {emoji:'✏️', title:'필기시험', date:'추후 입력', desc:'논술 1문제 · 작문 1문제'},
+      {emoji:'🗣️', title:'면접', date:'추후 입력', desc:''},
+      {emoji:'🏢', title:'인턴십', date:'추후 입력', desc:''},
+      {emoji:'🎉', title:'최종 입사', date:'추후 입력', desc:''},
+    ],
+    hired: '?',
+    exam: {
+      essay: '추후 입력 예정',
+      writing: '추후 입력 예정',
+    }
+  },
+  2021: {
+    timeline: [
+      {emoji:'📋', title:'서류 접수', date:'추후 입력', desc:''},
+      {emoji:'✏️', title:'필기시험', date:'추후 입력', desc:'논술 1문제 · 작문 1문제'},
+      {emoji:'🗣️', title:'면접', date:'추후 입력', desc:''},
+      {emoji:'🏢', title:'인턴십', date:'추후 입력', desc:''},
+      {emoji:'🎉', title:'최종 입사', date:'추후 입력', desc:''},
+    ],
+    hired: '?',
+    exam: {
+      essay: '추후 입력 예정',
+      writing: '추후 입력 예정',
+    }
+  },
+  2025: {
+    timeline: [
+      {emoji:'📋', title:'서류 접수', date:'추후 입력', desc:''},
+      {emoji:'✏️', title:'필기시험', date:'추후 입력', desc:'논술 1문제 · 작문 1문제'},
+      {emoji:'🗣️', title:'면접', date:'추후 입력', desc:''},
+      {emoji:'🏢', title:'인턴십', date:'추후 입력', desc:''},
+      {emoji:'🎉', title:'최종 입사', date:'추후 입력', desc:''},
+    ],
+    hired: '?',
+    exam: {
+      essay: '추후 입력 예정',
+      writing: '추후 입력 예정',
+    }
+  },
+};
+
+let currentYear = 2025;
+
+function openJokbo(){
+  document.getElementById('jokbo-screen').classList.add('show');
+  renderYearTabs();
+  renderJokboContent(currentYear);
+}
+function closeJokbo(){
+  document.getElementById('jokbo-screen').classList.remove('show');
+}
+
+function renderYearTabs(){
+  const years = Object.keys(JOKBO).sort((a,b)=>b-a);
+  document.getElementById('year-tabs').innerHTML = years.map(y=>`
+    <button class="year-tab${y==currentYear?' active':''}" onclick="selectYear(${y})">${y}년</button>
+  `).join('');
+}
+
+function selectYear(year){
+  currentYear = year;
+  renderYearTabs();
+  renderJokboContent(year);
+}
+
+function renderJokboContent(year){
+  const data = JOKBO[year];
+  if(!data){ document.getElementById('jokbo-content').innerHTML='<div style="text-align:center;padding:40px;color:#bbb">데이터 준비 중입니다</div>'; return; }
+
+  const timeline = data.timeline.map(t=>`
+    <div class="timeline-item">
+      <div class="tl-dot">${t.emoji}</div>
+      <div class="tl-content">
+        <div class="tl-title">${t.title}</div>
+        <div class="tl-date">${t.date}</div>
+        ${t.desc?`<div class="tl-desc">${t.desc}</div>`:''}
+      </div>
+    </div>`).join('');
+
+  const examHtml = data.exam.essay === '추후 입력 예정'
+    ? `<div class="exam-empty">📂 ${year}년 필기 문제는<br>곧 업데이트됩니다</div>`
+    : `<div class="exam-card">
+        <span class="exam-badge essay">논술</span>
+        <div class="exam-q">${data.exam.essay}</div>
+      </div>
+      <div class="exam-card">
+        <span class="exam-badge writing">작문</span>
+        <div class="exam-q">${data.exam.writing}</div>
+      </div>`;
+
+  document.getElementById('jokbo-content').innerHTML = `
+    <div class="jokbo-card">
+      <div class="jokbo-card-title">📅 ${year}년 채용 일정</div>
+      <div class="timeline">${timeline}</div>
+    </div>
+    <div class="jokbo-card">
+      <div class="jokbo-card-title">🎉 최종 입사 인원</div>
+      <div class="result-box">
+        <div class="result-num">${data.hired}</div>
+        <div class="result-label">명이 동아일보 기자로<br>최종 입사했습니다</div>
+      </div>
+    </div>
+    <div class="jokbo-card-title" style="padding:0 4px 10px;font-size:14px;font-weight:700;color:var(--ink)">✏️ ${year}년 필기 문제</div>
+    ${examHtml}`;
+}
+
+function openMemo(){
+  document.getElementById('memo-screen').classList.add('show');
+  // 저장된 메모 불러오기
+  try{
+    const saved = localStorage.getItem('donga_memo_' + user.name + user.school) || '';
+    document.getElementById('memo-textarea').value = saved;
+  }catch(e){}
+}
+function closeMemo(){
+  document.getElementById('memo-screen').classList.remove('show');
+}
+let memoTimer = null;
+function autoSaveMemo(){
+  clearTimeout(memoTimer);
+  document.getElementById('memo-saved').textContent = '';
+  memoTimer = setTimeout(()=>{
+    try{
+      const val = document.getElementById('memo-textarea').value;
+      localStorage.setItem('donga_memo_' + user.name + user.school, val);
+      document.getElementById('memo-saved').textContent = '✓ 자동 저장됨';
+      setTimeout(()=>{ document.getElementById('memo-saved').textContent=''; }, 2000);
+    }catch(e){}
+  }, 800);
+}
+
+function openInstagram(){
+  window.open('https://www.instagram.com/donga_recruit', '_blank');
+}
+function closeRecruit(){ document.getElementById('recruit-screen').style.display='none'; }
+
+function openQnA(){
+  document.getElementById('qna-screen').classList.add('show');
+  initQnA();
+  setTimeout(()=>{
+    const msgs = document.getElementById('qna-messages');
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 300);
+}
+function closeQnA(){
+  document.getElementById('qna-screen').classList.remove('show');
+  if(window._qnaUnsub){
+    window._db.ref('qna').off('value', window._qnaUnsub);
+    window._qnaUnsub=null;
+  }
+}
+
+function initQnA(){
+  if(window._qnaUnsub) return;
+  const messagesRef = window._db.ref('qna');
+  window._qnaUnsub = messagesRef.on('value', (snapshot)=>{
+    const data = snapshot.val();
+    const container = document.getElementById('qna-messages');
+    if(!container) return;
+    if(!data){
+      container.innerHTML = '<div class="qna-empty">질문을 입력하면 인사팀과 강사진이<br>실시간으로 답변해드려요 😊</div>';
+      return;
+    }
+    const msgs = Object.values(data).sort((a,b)=>(a.ts||0)-(b.ts||0));
+    container.innerHTML = msgs.map(m=>{
+      const isMine = m.uid === (user.name + user.school);
+      const isAdmin = m.role === 'admin';
+      const cls = isAdmin ? 'admin' : (isMine ? 'mine' : 'other');
+      const time = m.ts ? new Date(m.ts).toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}) : '';
+      const nameDiv = !isMine ? '<div class="qna-msg-name">'+(isAdmin?'🎤 '+m.name:m.name)+'</div>' : '';
+      return '<div class="qna-msg '+cls+'">'+nameDiv+m.text+'<div class="qna-msg-time">'+time+'</div></div>';
+    }).join('');
+    container.scrollTop = container.scrollHeight;
+  });
+}
+
+function sendQnA(){
+  const input = document.getElementById('qna-input');
+  const text = (input.value||'').trim();
+  if(!text) return;
+  const nickname = getOrCreateNickname();
+  window._db.ref('qna').push({
+    name: nickname,
+    school: user.school,
+    uid: user.name + user.school,
+    text: text,
+    role: 'user',
+    ts: Date.now()
+  });
+  input.value = '';
+}
+
+// 엔터키 전송
+document.addEventListener('keydown', e=>{
+  if(e.key==='Enter' && document.getElementById('qna-screen').classList.contains('show')){
+    sendQnA();
+  }
+});
+
+function renderMain(fadein){
+  const sd=SCHOOL_DATA[user.school];
+  const eC=state.exhibit.filter(Boolean).length;
+  const lC=state.lecture.filter(Boolean).length;
+  document.getElementById('main').innerHTML=`
+    <div class="user-bar${fadein?' main-fadein':''}">
+      <div class="user-left">
+        <span class="user-name">${user.name}</span>
+        <span class="user-school-badge ${sd.badgeClass}">${sd.emoji} ${sd.label} · ${sd.sub}</span>
+      </div>
+      <button class="btn-home" onclick="renderHome()"><i class="ti ti-arrow-left"></i> 홈</button>
+    </div>
+    <div class="camera-guide">
+      <div class="camera-guide-icon">📷</div>
+      <div class="camera-guide-text">
+        <strong>기본 카메라로 QR을 찍어보세요!</strong>
+        각 전시물 옆 QR을 찍으면 기사와 스탬프가 나와요
+      </div>
+    </div>
+    <div style="padding:10px 20px 0">
+      <button onclick="openRanking()" style="width:100%;padding:11px;background:white;border:1.5px solid var(--teal);border-radius:10px;font-family:'Pretendard','Noto Sans KR',sans-serif;font-size:13px;font-weight:700;color:var(--teal);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+        🏆 실시간 랭킹 보기
+      </button>
+    </div>
+    <div id="stamp-content"></div>`;
+  renderStamps();
+}
+
+function showConfirm(){document.getElementById('confirm-overlay').classList.add('show');}
+function hideConfirm(){document.getElementById('confirm-overlay').classList.remove('show');}
+
+function renderStamps(){
+  const eC=state.exhibit.filter(Boolean).length,lC=state.lecture.filter(Boolean).length;
+  let html=`<div class="stamp-section">
+    <div class="stamp-header"><span class="stamp-label">전시 스탬프</span><span class="stamp-count">${eC} / 8</span></div>
+    <div class="pbar"><div class="pfill" style="width:${eC/8*100}%"></div></div>
+    <div class="stamp-grid">`;
+  STAMPS.forEach((s,i)=>{
+    const done = state.exhibit[i];
+    html+=`<div class="stamp-cell${done?' done':''}" onclick="${done ? `confirmArticle('exhibit',${i})` : `showToast('🔍 아직 찾지 못했습니다','#888')`}">
+      ${ICONS[s.id]}<span class="stamp-num">${i+1}</span>
+    </div>`;
+  });
+  html+=`</div><hr class="divider">
+    <div class="section-label">강의 장표</div>
+    <div class="stamp-header"><span class="stamp-label">강의 스탬프</span><span class="stamp-count">${lC} / 4</span></div>
+    <div class="pbar"><div class="pfill gold" style="width:${lC/4*100}%"></div></div>
+    <div class="stamp-grid-lec">`;
+  LECTURES.forEach((l,i)=>{
+    const done = state.lecture[i];
+    html+=`<div class="stamp-cell-lec${done?' done':''}" onclick="${done ? `showToast('✅ 강의 수강 완료','#00827f')` : `showToast('📋 강의 중 QR을 찍어보세요!','#888')`}">
+      <i class="ti ${done?'ti-check':'ti-presentation'}"></i>${l.label}
+    </div>`;
+  });
+  html+=`</div></div>`;
+  document.getElementById('stamp-content').innerHTML=html;
+}
+
+function saveRanking(){
+  if(!window._db) return;
+  const nickname = getOrCreateNickname();
+  const total = state.exhibit.filter(Boolean).length+state.lecture.filter(Boolean).length;
+  const sd = SCHOOL_DATA[user.school];
+  const uid = (user.name+user.school).replace(/[^a-zA-Z0-9가-힣]/g,'_');
+  window._db.ref('rankings/'+uid).set({
+    nickname, school:user.school, schoolLabel:sd.label+' '+sd.sub,
+    stamps:total, updatedAt:Date.now()
+  });
+}
+
+function openArticleByCode(code){
+  const ei=STAMPS.findIndex(s=>s.code===code);
+  const li=LECTURES.findIndex(l=>l.code===code);
+  if(ei>=0){
+    const item=STAMPS[ei];
+    if(!state.exhibit[ei]){ state.exhibit[ei]=true; save(); saveRanking(); }
+    const total=state.exhibit.filter(Boolean).length+state.lecture.filter(Boolean).length;
+    showToast('🎉 스탬프 적립! '+item.label+' ('+total+'/'+(STAMPS.length+LECTURES.length)+')');
+    renderStamps();
+    if(total===12) setTimeout(showComplete,1000);
+    if(item.link) setTimeout(()=>window.open(item.link,'_blank'),700);
+  } else if(li>=0){
+    const item=LECTURES[li];
+    if(!state.lecture[li]){ state.lecture[li]=true; save(); saveRanking(); }
+    const total=state.exhibit.filter(Boolean).length+state.lecture.filter(Boolean).length;
+    showToast('🎉 스탬프 적립! '+item.label+' ('+total+'/'+(STAMPS.length+LECTURES.length)+')');
+    renderStamps();
+    if(total===12) setTimeout(showComplete,1000);
+    // 강의 스탬프는 링크 이동 없음
+  } else {
+    showToast('❌ 알 수 없는 QR이에요','#e74c3c');
+  }
+}
+
+function confirmArticle(type, idx){
+  const item = type==='exhibit' ? STAMPS[idx] : LECTURES[idx];
+  if(!item.link){ showToast('아직 기사가 준비 중이에요','#888'); return; }
+  document.getElementById('article-confirm-overlay').classList.add('show');
+  document.getElementById('article-confirm-overlay').dataset.link = item.link;
+  document.getElementById('article-confirm-title').textContent = '해당 기사를 다시 보시겠습니까?';
+}
+
+function openArticle(type,idx){
+  const item=type==='exhibit'?STAMPS[idx]:LECTURES[idx];
+  const done=type==='exhibit'?state.exhibit[idx]:state.lecture[idx];
+  currentArticle={type,idx};
+  const a=item.article;
+  document.getElementById('article-topbar-title').textContent=a.category;
+  let body=`
+    <div class="article-category">${a.category}</div>
+    <div class="article-title">${a.title}</div>
+    <div class="article-meta">
+      <span style="display:inline-block;width:20px;height:20px;vertical-align:middle">${DONGA_LOGO_SVG}</span>
+      동아일보 · ${a.date}
+    </div>`;
+  if(a.image){
+    body+=`<img class="article-img" src="${a.image}" alt="${a.title}">`;
+  } else {
+    body+=`<div class="article-img-placeholder"><i class="ti ti-photo" style="font-size:32px"></i><span>사진 준비 중</span></div>`;
+  }
+  body+=`<div class="article-text">${a.text}</div>`;
+  if(a.youtube){
+    body+=`<div class="article-video"><iframe src="https://www.youtube.com/embed/${a.youtube}" allowfullscreen allow="autoplay"></iframe></div>`;
+  }
+  document.getElementById('article-body').innerHTML=body;
+  const cta=document.getElementById('stamp-cta');
+  if(done){
+    cta.innerHTML=`
+      <div class="stamp-cta-done" style="margin-bottom:10px"><i class="ti ti-check" style="font-size:20px"></i> 이미 스탬프를 받았어요!</div>
+      <button class="stamp-cta-btn" style="background:#444" onclick="closeArticle()">
+        <i class="ti ti-home" style="font-size:18px"></i> 메인 화면으로 돌아가기
+      </button>`;
+  } else {
+    cta.innerHTML=`<button class="stamp-cta-btn" onclick="earnStamp()"><i class="ti ti-star" style="font-size:20px"></i> 스탬프 받기</button>`;
+  }
+  document.getElementById('article-screen').style.display='block';
+  document.getElementById('article-screen').scrollTop=0;
+}
+
+function closeArticle(){
+  document.getElementById('article-screen').style.display='none';
+  currentArticle=null;
+}
+
+function earnStamp(){
+  if(!currentArticle)return;
+  const{type,idx}=currentArticle;
+  const item=type==='exhibit'?STAMPS[idx]:LECTURES[idx];
+  if(type==='exhibit') state.exhibit[idx]=true;
+  else state.lecture[idx]=true;
+  save();
+  document.getElementById('stamp-cta').innerHTML=`
+    <div class="stamp-cta-done" style="margin-bottom:10px"><i class="ti ti-check" style="font-size:20px"></i> 스탬프 적립 완료!</div>
+    <button class="stamp-cta-btn" style="background:#444" onclick="closeArticle()">
+      <i class="ti ti-home" style="font-size:18px"></i> 메인 화면으로 돌아가기
+    </button>`;
+  const total=state.exhibit.filter(Boolean).length+state.lecture.filter(Boolean).length;
+  showToast(`🎉 스탬프 적립! ${item.label} (${total}/10)`);
+  renderStamps();
+  if(total===10) setTimeout(()=>{closeArticle();showComplete();},1500);
+}
+
+function checkURLQR(){
+  try{
+    const params=new URLSearchParams(window.location.search);
+    const qr=params.get('qr');
+    const link=params.get('link');
+    if(!qr)return;
+    history.replaceState(null,'',window.location.pathname);
+    const saved=load();
+    if(!saved||!saved.user||!saved.user.name){
+      sessionStorage.setItem('pending_qr',qr);
+      if(link) sessionStorage.setItem('pending_link',link);
+    } else {
+      user=saved.user;
+      state.exhibit=saved.exhibit||new Array(8).fill(false);
+      state.lecture=saved.lecture||new Array(2).fill(false);
+      renderMain(true);
+      setTimeout(()=>openArticleByCode(qr), 300);
+    }
+  }catch(e){}
+}
+
+function showComplete(){
+  clearSave();
+  const sd=SCHOOL_DATA[user.school];
+  const now=new Date();
+  const t=`${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+  const dots=Array(8).fill('<div class="cdot">✦</div>').join('')+Array(4).fill('<div class="cdot g">✦</div>').join('');
+  document.getElementById('main').innerHTML=`
+    <div class="complete-wrap">
+      <div class="complete-card">
+        <div class="seal"><div class="seal-logo">${DONGA_LOGO_SVG.replace(/stroke="#00827f"/g,'stroke="white"')}</div></div>
+        <div class="c-title">미션 완료!</div>
+        <div class="c-div"></div>
+        <p class="c-sub">10개의 스탬프를 모두 모았습니다.<br>인사팀에 이 화면을 보여주세요.</p>
+        <div class="c-dots">${dots}</div>
+        <div class="c-info">
+          <strong>${user.name}</strong>
+          <span class="school-tag" style="background:${sd.color}">${sd.emoji} ${sd.label}</span><br>
+          ${sd.sub}<br>완료 시각: <strong>${t}</strong>
+        </div>
+        <button class="btn-reset" onclick="resetAll()">처음으로 돌아가기</button>
+      </div>
+    </div>`;
+}
+
+function resetAll(){
+  hideConfirm();clearSave();closeArticle();
+  state={exhibit:new Array(8).fill(false),lecture:new Array(4).fill(false)};
+  renderLogin();
+}
+
+init();
+
+// 뒤로가기 버튼 처리
+window.addEventListener('popstate', function(e) {
+  // 기사 화면 열려있으면 닫기
+  if(document.getElementById('article-screen').style.display === 'block') {
+    closeArticle(); history.pushState(null, '', location.href); return;
+  }
+  // Q&A 화면 열려있으면 닫기
+  if(document.getElementById('qna-screen').classList.contains('show')) {
+    closeQnA(); history.pushState(null, '', location.href); return;
+  }
+  // 시간표 열려있으면 닫기
+  if(document.getElementById('timetable-screen').style.display === 'block') {
+    closeTimetable(); history.pushState(null, '', location.href); return;
+  }
+  // 메모 열려있으면 닫기
+  if(document.getElementById('memo-screen').classList.contains('show')) {
+    closeMemo(); history.pushState(null, '', location.href); return;
+  }
+  // 채용정보 열려있으면 닫기
+  if(document.getElementById('recruit-screen').style.display === 'block') {
+    closeRecruit(); history.pushState(null, '', location.href); return;
+  }
+  // 좌석안내 화면 열려있으면 닫기
+  if(document.getElementById('seat-screen').classList.contains('show')) {
+    document.getElementById('seat-screen').classList.remove('show');
+    history.pushState(null, '', location.href); return;
+  }
+  // 스탬프 화면에서 → 홈으로
+  const mainContent = document.getElementById('main');
+  if(mainContent && mainContent.querySelector('.stamp-section')) {
+    renderHome(); history.pushState(null, '', location.href); return;
+  }
+  // 그 외엔 앱 종료 방지
+  history.pushState(null, '', location.href);
+});
+
+// 초기 히스토리 상태 추가
+history.pushState(null, '', location.href);
+</script>
+</body>
+</html>
